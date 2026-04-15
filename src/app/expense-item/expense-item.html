@@ -1,0 +1,11 @@
+<div class="card m-2">
+  <div class="card-body">
+    <h5 class="card-title">
+      {{ expense().title }} <small>(id : {{ expense().id }})</small>
+    </h5>
+    <h6 class="{{ expense().category }}">{{ expense().category }}</h6>
+    <p>${{ expense().amount.toFixed(2).toString() }}</p>
+    <button class="btn btn-primary m-2" [routerLink]="['/edit', expense().id]">Edit</button>
+    <button class="btn btn-danger" (click)="delete()">Delete</button>
+  </div>
+</div>
