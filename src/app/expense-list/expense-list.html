@@ -1,6 +1,0 @@
-<div class="container-fluid">
-  <h1>Expense list</h1>
-  @for (expense of expenseService.expenses(); track expense.id) {
-    <app-expense-item [expense]="expense"></app-expense-item>
-  }
-</div>
