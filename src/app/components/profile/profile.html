@@ -1,0 +1,20 @@
+<div class="container-fluid">
+  <h1>{{ user()?.username }}'s Profile</h1>
+
+  <div class="row">
+    <div class="col-4">
+      <label for="username">Username: </label>
+      <input class="text" id="username" [(ngModel)]="username" />
+      <button class="btn" (click)="updateUsername()">Update</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-4">
+      <label for="email">Email: </label>
+      <input class="text" id="email" [(ngModel)]="email" />
+      <button class="btn" (click)="updateEmail()">Update</button>
+    </div>
+  </div>
+  <p>{{ message }}</p>
+</div>

@@ -1,8 +1,10 @@
 import { Injectable, signal } from '@angular/core';
-import { addDoc, collection, getDocs } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase.config';
+import { email } from '@angular/forms/signals';
 
 export interface User {
+  id?: string;
   username: string;
   email: string;
 }
@@ -47,6 +49,7 @@ export class UserService {
     const snapshot = await getDocs(this.usersCollection);
     const data = snapshot.docs.map((doc) => ({
       ...doc.data(),
+      id: doc.id,
     })) as User[];
     this.users.set(data);
   }
@@ -54,5 +57,23 @@ export class UserService {
   private async addUser(user: User) {
     await addDoc(this.usersCollection, user);
     this.loadUsers();
+  }
+
+  async updateUser(user: Partial<User>): Promise<string> {
+    if (this.currentUser()) {
+      if (this.users().find((value) => value.username === user.username)) {
+        return 'Username already in use.';
+      } else if (this.users().find((value) => value.email === user.email)) {
+        return 'Email already in use.';
+      }
+      var currentId = this.currentUser()?.id as string;
+      const userRef = doc(db, 'users', currentId);
+      await updateDoc(userRef, { ...user });
+      await this.loadUsers(); //it took me far too long to figure out I needed an wait here
+      this._currentUser.set(this.users().find((value) => value.id === currentId));
+      return 'User successfully updated!';
+    } else {
+      return 'Tried to update user while not logged-in. This should never happen.';
+    }
   }
 }

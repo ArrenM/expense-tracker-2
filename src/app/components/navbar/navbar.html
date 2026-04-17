@@ -3,6 +3,10 @@
     <a class="navbar-brand">Expense Tracker</a>
     <div>
       <a class="btn btn-light btn-sm me-3" routerLink="">Dashboard</a>
+      <a class="btn btn-light btn-sm me-3" routerLink="profile">Profile</a>
+      <a class="btn btn-light btn-sm me-3" routerLink="login" (click)="userService.logout()"
+        >Logout</a
+      >
     </div>
   </div>
 </nav>
