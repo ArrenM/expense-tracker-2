@@ -1,20 +1,26 @@
 <div class="container-fluid">
   <h1>{{ user()?.username }}'s Profile</h1>
-
-  <div class="row">
-    <div class="col-4">
+  <div class="row mb-2">
+    <div class="col-1">
       <label for="username">Username: </label>
+    </div>
+    <div class="col-auto">
       <input class="text" id="username" [(ngModel)]="username" />
-      <button class="btn" (click)="updateUsername()">Update</button>
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-primary" (click)="updateUsername()">Update</button>
     </div>
   </div>
-
   <div class="row">
-    <div class="col-4">
+    <div class="col-1">
       <label for="email">Email: </label>
-      <input class="text" id="email" [(ngModel)]="email" />
-      <button class="btn" (click)="updateEmail()">Update</button>
+    </div>
+    <div class="col-auto">
+      <input class="email" id="email" [(ngModel)]="email" />
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-primary" (click)="updateEmail()">Update</button>
     </div>
   </div>
-  <p>{{ message }}</p>
+  <p [class]="message().startsWith('Err:') ? 'text-danger' : 'text-success'">{{ message() }}</p>
 </div>

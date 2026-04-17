@@ -25,20 +25,25 @@ export class UserService {
 
   register(user: User): string {
     if (this.users().find((value) => value.username === user.username)) {
-      return 'Username already in use.';
+      return 'Err: Username already in use.';
     } else if (this.users().find((value) => value.email === user.email)) {
-      return 'Email already in use.';
+      return 'Err: Email already in use.';
     } else {
       this.addUser(user);
-      return 'Registration successful, you may now login.';
+      return 'Succesfully registired user.';
     }
   }
 
-  login(user: User) {
+  login(user: User): string {
     //will set to undefined if not in user list
     this._currentUser.set(
       this.users().find((value) => value.username === user.username && value.email === user.email),
     );
+    if (this.currentUser()) {
+      return 'Login succesful';
+    } else {
+      return 'Err: Incorrect username or email.';
+    }
   }
 
   logout() {
@@ -62,18 +67,18 @@ export class UserService {
   async updateUser(user: Partial<User>): Promise<string> {
     if (this.currentUser()) {
       if (this.users().find((value) => value.username === user.username)) {
-        return 'Username already in use.';
+        return 'Err: Username already in use.';
       } else if (this.users().find((value) => value.email === user.email)) {
-        return 'Email already in use.';
+        return 'Err: Email already in use.';
       }
       var currentId = this.currentUser()?.id as string;
       const userRef = doc(db, 'users', currentId);
       await updateDoc(userRef, { ...user });
       await this.loadUsers(); //it took me far too long to figure out I needed an wait here
       this._currentUser.set(this.users().find((value) => value.id === currentId));
-      return 'User successfully updated!';
+      return 'Successfully updated user.';
     } else {
-      return 'Tried to update user while not logged-in. This should never happen.';
+      return 'Err: Tried to update user while not logged-in. This should never happen.';
     }
   }
 }

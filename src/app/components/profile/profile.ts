@@ -16,7 +16,7 @@ export class Profile {
 
   username = this.user()?.username;
   email = this.user()?.email;
-  message = '';
+  message = signal<string>('');
 
   ngOnInit() {
     if (!this.userService.currentUser()) {
@@ -27,10 +27,10 @@ export class Profile {
   updateUsername() {
     this.userService
       .updateUser({ username: this.username })
-      .then((value) => (this.message = value));
+      .then((value) => this.message.set(value));
   }
 
   updateEmail() {
-    this.userService.updateUser({ email: this.email }).then((value) => (this.message = value));
+    this.userService.updateUser({ email: this.email }).then((value) => this.message.set(value));
   }
 }

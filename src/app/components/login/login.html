@@ -1,9 +1,25 @@
 <div class="container-fluid">
-  <label for="username">Username: </label>
-  <input class="text" id="username" [(ngModel)]="username" />
-  <label for="email">Email: </label>
-  <input class="email" id="email" [(ngModel)]="email" />
-  <button class="btn" (click)="login()">Login</button>
-  <button class="btn" (click)="register()">Register</button>
-  <p>{{ message }}</p>
+  <div class="row-auto">
+    <div class="col-auto">
+      <label for="username">Username: </label>
+    </div>
+    <div class="col-auto">
+      <input class="text" id="username" [(ngModel)]="username" />
+    </div>
+  </div>
+  <div class="row-auto">
+    <div class="col-auto">
+      <label for="email">Email: </label>
+    </div>
+    <div class="col-auto">
+      <input class="email" id="email" [(ngModel)]="email" />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-auto">
+      <button class="btn btn-primary m-2" (click)="login()">Login</button>
+      <button class="btn btn-primary m-2" (click)="register()">Register</button>
+    </div>
+  </div>
+  <p [class]="message().startsWith('Err:') ? 'text-danger' : 'text-success'">{{ message() }}</p>
 </div>
