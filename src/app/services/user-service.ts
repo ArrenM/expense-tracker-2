@@ -28,7 +28,7 @@ export class UserService {
       return 'Email already in use.';
     } else {
       this.addUser(user);
-      return 'Registration successful!';
+      return 'Registration successful, you may now login.';
     }
   }
 

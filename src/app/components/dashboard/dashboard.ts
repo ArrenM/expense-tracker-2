@@ -1,5 +1,5 @@
 import { Component, inject, input, signal } from '@angular/core';
-import { UserService } from '../../services/user-service';
+import { User, UserService } from '../../services/user-service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,12 +9,14 @@ import { Router } from '@angular/router';
 })
 export class Dashboard {
   userService = inject(UserService);
-
   router = inject(Router);
+  user!: User;
 
   ngOnInit() {
     if (!this.userService.currentUser()) {
       this.router.navigate(['login']);
+    } else {
+      this.user = this.userService.currentUser() as User;
     }
   }
 }
