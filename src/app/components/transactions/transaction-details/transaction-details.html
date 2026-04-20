@@ -1,0 +1,21 @@
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title">
+      {{ transaction().date }} :
+      @if (transaction().type == 'Expense') {
+        -${{ transaction().amount }}
+      } @else {
+        +${{ transaction().amount }}
+      }
+    </h4>
+    <app-category-details [category]="transaction().category" />
+    <h6>Notes:</h6>
+    <p class="card-text">{{ transaction().notes }}</p>
+    <button class="btn btn-primary" [routerLink]="['edit/transaction', transaction().id]">
+      Edit
+    </button>
+    <button class="btn btn-danger" (click)="transactionService.delete(transaction().id!)">
+      Delete
+    </button>
+  </div>
+</div>

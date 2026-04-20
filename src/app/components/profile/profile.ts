@@ -2,6 +2,7 @@ import { Component, inject, signal, Signal } from '@angular/core';
 import { User, UserService } from '../../services/user-service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { TransactionService } from '../../services/transaction-service';
 
 @Component({
   selector: 'app-profile',

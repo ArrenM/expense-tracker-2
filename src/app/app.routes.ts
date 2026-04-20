@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { Dashboard } from './components/dashboard/dashboard';
 import { Login } from './components/login/login';
 import { Profile } from './components/profile/profile';
+import { EditTransaction } from './components/transactions/edit-transaction/edit-transaction';
 
 export const routes: Routes = [
   {
@@ -18,5 +19,10 @@ export const routes: Routes = [
     path: 'profile',
     component: Profile,
     title: 'Profile',
+  },
+  {
+    path: 'edit/transaction/:id',
+    component: EditTransaction,
+    title: 'Edit Transaction',
   },
 ];
