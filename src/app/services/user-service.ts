@@ -1,7 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { addDoc, collection, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase.config';
-import { email } from '@angular/forms/signals';
 
 export interface User {
   id?: string;
