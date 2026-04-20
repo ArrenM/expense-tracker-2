@@ -22,7 +22,7 @@ export class CategoryService {
   private categories = signal<Category[]>([]);
   //array of category objects filtered for current user
   public userCategories = computed<Category[]>(() =>
-    this.categories().filter((value) => value.userId == this.user()?.id || value.userId == '0'),
+    this.categories().filter((value) => value.userId == this.user()?.id || value.userId == ''),
   );
 
   //firebase collection of categories
@@ -35,5 +35,9 @@ export class CategoryService {
       id: doc.id,
     })) as Category[];
     this.categories.set(data);
+  }
+
+  getCategoryById(id: string) {
+    return this.userCategories().find((value) => value.id == id);
   }
 }

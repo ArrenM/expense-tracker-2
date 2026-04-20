@@ -3,6 +3,7 @@ import { Dashboard } from './components/dashboard/dashboard';
 import { Login } from './components/login/login';
 import { Profile } from './components/profile/profile';
 import { EditTransaction } from './components/transactions/edit-transaction/edit-transaction';
+import { AddTransaction } from './components/transactions/add-transaction/add-transaction';
 
 export const routes: Routes = [
   {
@@ -21,8 +22,13 @@ export const routes: Routes = [
     title: 'Profile',
   },
   {
-    path: 'edit/transaction/:id',
+    path: 'transaction/edit/:id',
     component: EditTransaction,
     title: 'Edit Transaction',
+  },
+  {
+    path: 'transaction/add',
+    component: AddTransaction,
+    title: 'Add Transaction',
   },
 ];

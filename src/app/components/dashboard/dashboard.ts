@@ -1,6 +1,6 @@
 import { Component, inject, input, signal } from '@angular/core';
 import { User, UserService } from '../../services/user-service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { TransactionService } from '../../services/transaction-service';
 import { CategoryService } from '../../services/category-service';
 import { TransactionDetails } from '../transactions/transaction-details/transaction-details';
@@ -9,7 +9,7 @@ import { TransactionDetails } from '../transactions/transaction-details/transact
   selector: 'app-dashboard',
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
-  imports: [TransactionDetails],
+  imports: [TransactionDetails, RouterLink],
 })
 export class Dashboard {
   userService = inject(UserService);

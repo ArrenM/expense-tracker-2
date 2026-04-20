@@ -1,5 +1,5 @@
-import { Component, input } from '@angular/core';
-import { Category } from '../../../services/category-service';
+import { Component, inject, input } from '@angular/core';
+import { Category, CategoryService } from '../../../services/category-service';
 
 @Component({
   selector: 'app-category-details',
@@ -8,5 +8,11 @@ import { Category } from '../../../services/category-service';
   styleUrl: './category-details.css',
 })
 export class CategoryDetails {
-  category = input.required<Category>();
+  id = input.required<string>();
+  categoryService = inject(CategoryService);
+  category!: Category;
+
+  ngOnInit() {
+    this.category = this.categoryService.getCategoryById(this.id())!;
+  }
 }

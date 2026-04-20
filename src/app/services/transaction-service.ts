@@ -1,5 +1,5 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { addDoc, collection, getDocs } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase.config';
 import { UserService } from './user-service';
 import { Category } from './category-service';
@@ -10,9 +10,9 @@ export interface Transaction {
   id?: string;
   userId?: string;
   amount: number;
-  category: Category;
+  categoryId: string;
   date?: Date;
-  notes?: string[];
+  notes?: string;
   type: TransactionType;
 }
 
@@ -61,7 +61,14 @@ export class TransactionService {
   }
 
   async add(transaction: Transaction) {
-    await addDoc(this.transactionCollection, { ...transaction, userId: this.user()?.id });
+    if (this.user()) {
+      await addDoc(this.transactionCollection, { ...transaction, userId: this.user()?.id });
+      this.loadTransactions();
+    }
+  }
+
+  async delete(id: string) {
+    await deleteDoc(doc(db, 'transactions', id));
     this.loadTransactions();
   }
 }

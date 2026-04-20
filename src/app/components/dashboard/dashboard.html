@@ -1,5 +1,7 @@
 <div class="container-fluid">
   <h1>{{ user.username }}'s Dashboard</h1>
+  <h2>Transactions</h2>
+  <button class="btn btn-primary" [routerLink]="['transaction/add']">Add</button>
   @for (transaction of transactionService.userTransactions(); track transaction) {
     <app-transaction-details [transaction]="transaction" />
   }

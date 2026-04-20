@@ -8,10 +8,10 @@
         +${{ transaction().amount }}
       }
     </h4>
-    <app-category-details [category]="transaction().category" />
+    <app-category-details [id]="transaction().categoryId" />
     <h6>Notes:</h6>
     <p class="card-text">{{ transaction().notes }}</p>
-    <button class="btn btn-primary" [routerLink]="['edit/transaction', transaction().id]">
+    <button class="btn btn-primary" [routerLink]="['transaction/edit', transaction().id]">
       Edit
     </button>
     <button class="btn btn-danger" (click)="transactionService.delete(transaction().id!)">
