@@ -119,7 +119,7 @@ export class Dashboard {
     var canvas = document.getElementById('barCanvas')!;
     var context = (canvas as HTMLCanvasElement).getContext('2d')!;
     context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
-    var scale = 5;
+    var scale = this.spendingTotal() / 50;
 
     for (let i = -29; i <= 0; i++) {
       var day = new Date();
@@ -144,13 +144,17 @@ export class Dashboard {
       var x = 25 * i + canvas.clientWidth;
       var y = canvas.clientHeight / 2;
       //expense
-      context.fillStyle = 'red';
-      context.fillRect(x, y, 10, expense / scale);
-      context.strokeText(expense.toString(), x, y + expense / scale);
+      if (expense != 0) {
+        context.fillStyle = 'red';
+        context.fillRect(x, y, 10, expense / scale);
+        context.strokeText(expense.toString(), x, y + expense / scale);
+      }
       //income
-      context.fillStyle = 'green';
-      context.fillRect(x, y, 10, -income / scale);
-      context.strokeText(income.toString(), x, y + -income / scale);
+      if (income != 0) {
+        context.fillStyle = 'green';
+        context.fillRect(x, y, 10, -income / scale);
+        context.strokeText(income.toString(), x, y + -income / scale);
+      }
       //day
       context.strokeText(day.getDate().toString(), x, y);
     }

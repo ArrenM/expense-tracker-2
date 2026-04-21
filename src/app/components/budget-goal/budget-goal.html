@@ -1,0 +1,12 @@
+<div class="card">
+  <div class="card-body">
+    <app-category-details [id]="goal().category.id!" />
+    <h3>${{ goal().amount }}</h3>
+    <!-- <button class="btn btn-primary" [routerLink]="['transaction/edit', transaction().id]">
+      Edit
+    </button>
+    <button class="btn btn-danger" (click)="transactionService.delete(transaction().id!)">
+      Delete
+    </button> -->
+  </div>
+</div>

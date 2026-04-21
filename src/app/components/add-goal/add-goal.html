@@ -1,0 +1,20 @@
+<div class="container-fluid">
+  <h4>Add New Budget Goal</h4>
+
+  <div>
+    <label for="amount">Amount:</label>
+    <input type="number" id="amount" [(ngModel)]="amount" />
+  </div>
+
+  <div>
+    <label for="category">Category:</label>
+    <select id="category" [(ngModel)]="categoryId">
+      @for (category of categoryService.userCategories(); track category.id) {
+        <option [ngValue]="category.id">{{ category.name }}{{ category.icon }}</option>
+      }
+    </select>
+  </div>
+
+  <button class="btn btn-primary" (click)="add()">Add</button>
+  <p [class]="message().startsWith('Err:') ? 'text-danger' : 'text-success'">{{ message() }}</p>
+</div>

@@ -1,11 +1,15 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { addDoc, collection, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase.config';
+import { Category, CategoryService } from './category-service';
+
+export type BudgetGoal = { category: Category; amount: number };
 
 export interface User {
   id?: string;
   username: string;
   email: string;
+  budget: BudgetGoal[];
 }
 
 @Injectable({
@@ -22,18 +26,18 @@ export class UserService {
   private _currentUser = signal<User | undefined>(undefined);
   currentUser = this._currentUser.asReadonly();
 
-  register(user: User): string {
+  register(user: Partial<User>): string {
     if (this.users().find((value) => value.username === user.username)) {
       return 'Err: Username already in use.';
     } else if (this.users().find((value) => value.email === user.email)) {
       return 'Err: Email already in use.';
     } else {
-      this.addUser(user);
+      this.addUser({ username: user.username!, email: user.email!, budget: [] });
       return 'Succesfully registired user.';
     }
   }
 
-  login(user: User): string {
+  login(user: Partial<User>): string {
     //will set to undefined if not in user list
     this._currentUser.set(
       this.users().find((value) => value.username === user.username && value.email === user.email),

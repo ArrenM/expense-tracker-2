@@ -4,6 +4,7 @@ import { Login } from './components/login/login';
 import { Profile } from './components/profile/profile';
 import { EditTransaction } from './components/transactions/edit-transaction/edit-transaction';
 import { AddTransaction } from './components/transactions/add-transaction/add-transaction';
+import { AddGoal } from './components/add-goal/add-goal';
 
 export const routes: Routes = [
   {
@@ -30,5 +31,10 @@ export const routes: Routes = [
     path: 'transaction/add',
     component: AddTransaction,
     title: 'Add Transaction',
+  },
+  {
+    path: 'goal/add',
+    component: AddGoal,
+    title: 'Add Budget Goal',
   },
 ];

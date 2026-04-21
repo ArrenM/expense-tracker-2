@@ -22,5 +22,12 @@
       <button class="btn btn-primary" (click)="updateEmail()">Update</button>
     </div>
   </div>
+  <div name="budget">
+    <h2>Budget Goals</h2>
+    <button class="btn btn-primary" [routerLink]="['/goal/add']">Add</button>
+    @for (goal of user()!.budget; track goal.category) {
+      <app-budget-goal [goal]="goal"></app-budget-goal>
+    }
+  </div>
   <p [class]="message().startsWith('Err:') ? 'text-danger' : 'text-success'">{{ message() }}</p>
 </div>

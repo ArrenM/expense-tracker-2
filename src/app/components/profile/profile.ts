@@ -1,12 +1,13 @@
 import { Component, inject, signal, Signal } from '@angular/core';
 import { User, UserService } from '../../services/user-service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { TransactionService } from '../../services/transaction-service';
+import { BudgetGoalDetails } from '../budget-goal/budget-goal';
 
 @Component({
   selector: 'app-profile',
-  imports: [FormsModule],
+  imports: [FormsModule, BudgetGoalDetails, RouterLink],
   templateUrl: './profile.html',
   styleUrl: './profile.css',
 })
