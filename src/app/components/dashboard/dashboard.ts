@@ -2,7 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { User, UserService } from '../../services/user-service';
 import { Router, RouterLink } from '@angular/router';
 import { Transaction, TransactionService } from '../../services/transaction-service';
-import { CategoryService } from '../../services/category-service';
+import { Category, CategoryService } from '../../services/category-service';
 import { TransactionDetails } from '../transactions/transaction-details/transaction-details';
 import { FormsModule } from '@angular/forms';
 import { Timestamp } from 'firebase/firestore';
@@ -14,12 +14,15 @@ import { Timestamp } from 'firebase/firestore';
   imports: [TransactionDetails, RouterLink, FormsModule],
 })
 export class Dashboard {
+  //injections
   userService = inject(UserService);
   transactionService = inject(TransactionService);
   categoryService = inject(CategoryService);
   router = inject(Router);
+
   user!: User;
 
+  //filter stuff
   dateStart = signal<string>(new Date(0, 0).toDateString());
   dateEnd = signal<string>(new Date(9999, 11).toDateString());
   categoryFilter = signal<string>('');
@@ -40,6 +43,33 @@ export class Dashboard {
       })
       .sort((a, b) => b.date.seconds - a.date.seconds),
   );
+
+  //absolute clusterfuck of a signal right here
+  spendingByCategory = computed<{ category: Category; amount: number }[]>(() => {
+    var result: { category: Category; amount: number }[] = [];
+    for (let category of this.categoryService.userCategories()) {
+      var total = 0;
+      for (let transaction of this.transactionService.userTransactions().filter((value) => {
+        return value.categoryId == category.id;
+      })) {
+        if (transaction.type == 'Expense') {
+          total += transaction.amount;
+        }
+      }
+      result.push({ category: category, amount: total });
+    }
+    return result;
+  });
+
+  spendingTotal = computed<number>(() => {
+    var total = 0;
+    for (let transaction of this.transactionService.userTransactions()) {
+      if (transaction.type == 'Expense') {
+        total += transaction.amount;
+      }
+    }
+    return total;
+  });
 
   ngOnInit() {
     if (!this.userService.currentUser()) {

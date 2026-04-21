@@ -1,40 +1,52 @@
 <div class="container-fluid">
+  <!--I know none of this looks pretty but I am running out of time to even get the logic to work out and I really have no clue how Material would even help with this-->
   <h1>{{ user.username }}'s Dashboard</h1>
-  <h2>Transactions</h2>
-
-  <div class="card">
-    <div class="card-body">
-      <h3 class="card-title">Filters</h3>
-
-      <div>
-        <label for="category">Category:</label>
-        <select id="category" [(ngModel)]="categoryFilter">
-          @for (category of categoryService.userCategories(); track category.id) {
-            <option [ngValue]="category.id">{{ category.name }}{{ category.icon }}</option>
-          }
-        </select>
-      </div>
-
-      <div>
-        <label for="min">Minimum Amount:</label>
-        <input type="number" id="min" [(ngModel)]="minAmount" />
-        <label for="max">Maximum Amount:</label>
-        <input type="number" id="max" [(ngModel)]="maxAmount" />
-      </div>
-
-      <div>
-        <label for="start">Start Date:</label>
-        <input type="date" id="start" [(ngModel)]="dateStart" />
-        <label for="end">End Date:</label>
-        <input type="date" id="end" [(ngModel)]="dateEnd" />
-      </div>
-
-      <button class="btn btn-primary" (click)="clearFilter()">Clear</button>
-    </div>
+  <div name="summary">
+    <h2>Monthly Summary</h2>
+    <p>Net Total: ${{ transactionService.getTransactionTotal() }}</p>
+    <p>Total Spending: ${{ spendingTotal() }}</p>
   </div>
+  <div name="charts">
+    <!--how the hell am I supposed to do this part-->
+    <div name="pie"></div>
+  </div>
+  <div name="transactions">
+    <h2>Transactions</h2>
 
-  <button class="btn btn-primary" [routerLink]="['transaction/add']">Add</button>
-  @for (transaction of filteredTransactions(); track transaction.id) {
-    <app-transaction-details [transaction]="transaction" />
-  }
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title">Filters</h3>
+
+        <div>
+          <label for="category">Category:</label>
+          <select id="category" [(ngModel)]="categoryFilter">
+            @for (category of categoryService.userCategories(); track category.id) {
+              <option [ngValue]="category.id">{{ category.name }}{{ category.icon }}</option>
+            }
+          </select>
+        </div>
+
+        <div>
+          <label for="min">Minimum Amount:</label>
+          <input type="number" id="min" [(ngModel)]="minAmount" />
+          <label for="max">Maximum Amount:</label>
+          <input type="number" id="max" [(ngModel)]="maxAmount" />
+        </div>
+
+        <div>
+          <label for="start">Start Date:</label>
+          <input type="date" id="start" [(ngModel)]="dateStart" />
+          <label for="end">End Date:</label>
+          <input type="date" id="end" [(ngModel)]="dateEnd" />
+        </div>
+
+        <button class="btn btn-primary" (click)="clearFilter()">Clear</button>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" [routerLink]="['transaction/add']">Add</button>
+    @for (transaction of filteredTransactions(); track transaction.id) {
+      <app-transaction-details [transaction]="transaction" />
+    }
+  </div>
 </div>
