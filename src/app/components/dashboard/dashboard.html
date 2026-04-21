@@ -1,6 +1,4 @@
 <div class="container-fluid">
-  <!--I know none of this looks pretty but I am running out of time to even get the logic to work out 
-  and I really have no clue how Material would even help with this-->
   <h1>{{ user.username }}'s Dashboard</h1>
   <div name="summary">
     <h2>Monthly Summary</h2>
@@ -8,8 +6,8 @@
     <p>Total Spending: ${{ spendingTotal() }}</p>
   </div>
   <div name="charts">
-    <!--how the hell am I supposed to do this part-->
     <h2>Charts</h2>
+    <button class="btn btn-primary" (click)="drawCharts()">Redraw charts</button>
     <div class="row">
       <div class="col-2">
         <canvas id="pieCanvas" width="200" height="200" style="border: 1px solid black"></canvas>

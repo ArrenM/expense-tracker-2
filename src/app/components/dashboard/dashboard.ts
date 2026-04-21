@@ -1,11 +1,10 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, SimpleChanges } from '@angular/core';
 import { User, UserService } from '../../services/user-service';
 import { Router, RouterLink } from '@angular/router';
 import { Transaction, TransactionService } from '../../services/transaction-service';
 import { Category, CategoryService } from '../../services/category-service';
 import { TransactionDetails } from '../transactions/transaction-details/transaction-details';
 import { FormsModule } from '@angular/forms';
-import { Timestamp } from 'firebase/firestore';
 import { CategoryDetails } from '../categories/category-details/category-details';
 
 @Component({
@@ -30,8 +29,8 @@ export class Dashboard {
   maxAmount = signal<number>(1e6);
   minAmount = signal<number>(0);
 
-  filteredTransactions = computed<Transaction[]>(() =>
-    this.transactionService
+  filteredTransactions = computed<Transaction[]>(() => {
+    return this.transactionService
       .userTransactions()
       .filter((value) => {
         return (
@@ -42,10 +41,9 @@ export class Dashboard {
           value.date.seconds <= new Date(this.dateEnd()).getTime() / 1000
         );
       })
-      .sort((a, b) => b.date.seconds - a.date.seconds),
-  );
+      .sort((a, b) => b.date.seconds - a.date.seconds);
+  });
 
-  //absolute clusterfuck of a signal right here
   spendingByCategory = computed<{ category: Category; amount: number }[]>(() => {
     var result: { category: Category; amount: number }[] = [];
     for (let category of this.categoryService.userCategories()) {
@@ -77,8 +75,7 @@ export class Dashboard {
       this.router.navigate(['login']);
     } else {
       this.user = this.userService.currentUser() as User;
-      this.drawPieChart();
-      this.drawBarChart();
+      this.drawCharts();
     }
   }
 
@@ -90,11 +87,15 @@ export class Dashboard {
     this.dateEnd.set(new Date(9999, 11).toDateString());
   }
 
+  drawCharts() {
+    this.drawPieChart();
+    this.drawBarChart();
+  }
+
   drawPieChart() {
-    //by the end of this I will either be crushed and never try web dev ever again
-    //or become god of all hypertext
     var canvas = document.getElementById('pieCanvas')!;
     var context = (canvas as HTMLCanvasElement).getContext('2d')!;
+    context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
     var startAngle = 0;
 
     for (let entry of this.spendingByCategory()) {
@@ -112,16 +113,13 @@ export class Dashboard {
       context.fill();
       startAngle = endAngle;
     }
-    //HELL YEAH
   }
 
   drawBarChart() {
-    //I could be playing Splatoon right now - (it's 10:34 PM...)
     var canvas = document.getElementById('barCanvas')!;
     var context = (canvas as HTMLCanvasElement).getContext('2d')!;
-    var today = new Date();
+    context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
     var scale = 5;
-    var margin = 10;
 
     for (let i = -29; i <= 0; i++) {
       var day = new Date();
@@ -148,9 +146,11 @@ export class Dashboard {
       //expense
       context.fillStyle = 'red';
       context.fillRect(x, y, 10, expense / scale);
+      context.strokeText(expense.toString(), x, y + expense / scale);
       //income
       context.fillStyle = 'green';
       context.fillRect(x, y, 10, -income / scale);
+      context.strokeText(income.toString(), x, y + -income / scale);
       //day
       context.strokeText(day.getDate().toString(), x, y);
     }
