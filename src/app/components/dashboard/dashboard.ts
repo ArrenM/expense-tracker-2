@@ -50,7 +50,7 @@ export class Dashboard {
     var result: { category: Category; amount: number }[] = [];
     for (let category of this.categoryService.userCategories()) {
       var total = 0;
-      for (let transaction of this.transactionService.userTransactions().filter((value) => {
+      for (let transaction of this.filteredTransactions().filter((value) => {
         return value.categoryId == category.id;
       })) {
         if (transaction.type == 'Expense') {
@@ -64,7 +64,7 @@ export class Dashboard {
 
   spendingTotal = computed<number>(() => {
     var total = 0;
-    for (let transaction of this.transactionService.userTransactions()) {
+    for (let transaction of this.filteredTransactions()) {
       if (transaction.type == 'Expense') {
         total += transaction.amount;
       }
@@ -78,6 +78,7 @@ export class Dashboard {
     } else {
       this.user = this.userService.currentUser() as User;
       this.drawPieChart();
+      this.drawBarChart();
     }
   }
 
@@ -112,5 +113,46 @@ export class Dashboard {
       startAngle = endAngle;
     }
     //HELL YEAH
+  }
+
+  drawBarChart() {
+    //I could be playing Splatoon right now - (it's 10:34 PM...)
+    var canvas = document.getElementById('barCanvas')!;
+    var context = (canvas as HTMLCanvasElement).getContext('2d')!;
+    var today = new Date();
+    var scale = 5;
+    var margin = 10;
+
+    for (let i = -29; i <= 0; i++) {
+      var day = new Date();
+      day.setDate(day.getDate() + i);
+      //get transactions on that given day
+      var data = this.filteredTransactions().filter((value) => {
+        return value.date.toDate().getDate() == day.getDate();
+      });
+
+      //calculate total expenses and income
+      var expense = 0;
+      var income = 0;
+      for (let transaction of data) {
+        if (transaction.type == 'Expense') {
+          expense += transaction.amount;
+        } else {
+          income += transaction.amount;
+        }
+      }
+
+      //draw bars
+      var x = 25 * i + canvas.clientWidth;
+      var y = canvas.clientHeight / 2;
+      //expense
+      context.fillStyle = 'red';
+      context.fillRect(x, y, 10, expense / scale);
+      //income
+      context.fillStyle = 'green';
+      context.fillRect(x, y, 10, -income / scale);
+      //day
+      context.strokeText(day.getDate().toString(), x, y);
+    }
   }
 }
