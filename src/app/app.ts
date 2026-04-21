@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { Navbar } from './components/navbar/navbar';
 import { UserService } from './services/user-service';
 import { TransactionService } from './services/transaction-service';
@@ -16,10 +16,14 @@ export class App {
   userService = inject(UserService);
   transactionService = inject(TransactionService);
   categoryService = inject(CategoryService);
+  router = inject(Router);
 
   ngOnInit() {
     this.userService.loadUsers();
     this.categoryService.loadCategories();
     this.transactionService.loadTransactions();
+    if (!this.userService.currentUser()) {
+      this.router.navigate(['login']);
+    }
   }
 }

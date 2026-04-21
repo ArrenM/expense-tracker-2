@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { TransactionService, TransactionType } from '../../../services/transaction-service';
 import { CategoryService } from '../../../services/category-service';
 import { FormsModule } from '@angular/forms';
+import { Timestamp } from 'firebase/firestore';
 
 @Component({
   selector: 'app-add-transaction',
@@ -32,7 +33,7 @@ export class AddTransaction {
         type: this.type,
         amount: this.amount,
         categoryId: this.categoryId,
-        date: this.date,
+        date: new Timestamp(new Date(this.date).getTime() / 1000, 0), //this date shit is so stupid
         notes: this.notes,
       });
       this.message.set('Transaction added.');

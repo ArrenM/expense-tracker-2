@@ -1,5 +1,5 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { addDoc, collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDocs, Timestamp } from 'firebase/firestore';
 import { db } from '../../firebase.config';
 import { UserService } from './user-service';
 import { Category } from './category-service';
@@ -11,7 +11,7 @@ export interface Transaction {
   userId?: string;
   amount: number;
   categoryId: string;
-  date?: Date;
+  date: Timestamp;
   notes?: string;
   type: TransactionType;
 }
